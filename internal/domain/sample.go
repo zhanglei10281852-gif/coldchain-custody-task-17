@@ -84,14 +84,6 @@ func (b *SampleBatch) Transition(to SampleState, now time.Time) error {
 	return nil
 }
 
-func (b SampleBatch) CopyInto(target *SampleBatch) *SampleBatch {
-	if target == nil {
-		target = &SampleBatch{}
-	}
-	*target = b
-	return target
-}
-
 func (b SampleBatch) Clone() SampleBatch { return b }
 
 func (b SampleBatch) IsUsableAt(at time.Time) bool {

@@ -32,7 +32,6 @@ func (s *CatalogService) BulkRegisterSamples(ctx context.Context, batches []doma
 		return BulkSampleResult{}, domain.FieldError{Field: "batches", Message: "cannot contain more than 100 items"}
 	}
 	result := BulkSampleResult{Items: make([]BulkSampleItem, 0, len(batches))}
-	sharedBatch := &domain.SampleBatch{}
 	for index, input := range batches {
 		if err := ctx.Err(); err != nil {
 			return result, err
@@ -45,7 +44,7 @@ func (s *CatalogService) BulkRegisterSamples(ctx context.Context, batches []doma
 		}
 		result.Succeeded++
 		createdCopy := created.Clone()
-		result.Items = append(result.Items, BulkSampleItem{Index: index, Batch: createdCopy.CopyInto(sharedBatch), Code: "created"})
+		result.Items = append(result.Items, BulkSampleItem{Index: index, Batch: &createdCopy, Code: "created"})
 	}
 	return result, nil
 }
